@@ -41,13 +41,24 @@
       document.getElementById("msg").value = "";
     }
 
-    chat.map().on((data) => {
-      if (!data || !data.text) return;
+    const messages = {};
 
+chat.map().on((data, id) => {
+  if (!data || !data.text) return;
+
+  messages[id] = data;
+
+  const chatEl = document.getElementById("chat");
+  chatEl.innerHTML = "";
+
+  Object.values(messages)
+    .sort((a, b) => a.time - b.time)
+    .forEach(msg => {
       const li = document.createElement("li");
-      li.textContent = data.name + ": " + data.text;
-
-      document.getElementById("chat").appendChild(li);
+      li.textContent = msg.name + ": " + msg.text;
+      chatEl.appendChild(li);
+    });
+});
     });
   </script>
 </body>
