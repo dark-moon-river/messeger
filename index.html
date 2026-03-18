@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Mini Chat</title>
+  <style>
+    body { font-family: Arial; max-width: 500px; margin: auto; }
+    li { margin: 5px 0; }
+  </style>
+</head>
+<body>
+  <h2>Чат</h2>
+
+  <input id="name" placeholder="Ваше имя"><br><br>
+  <input id="msg" placeholder="Сообщение">
+  <button onclick="send()">Отправить</button>
+
+  <ul id="chat"></ul>
+
+  <script src="https://cdn.jsdelivr.net/npm/gun/gun.js"></script>
+
+  <script>
+    const gun = Gun({
+      peers: ['https://gun-manhattan.herokuapp.com/gun']
+    });
+
+    const chat = gun.get('global-chat');
+
+    function send() {
+      const name = document.getElementById("name").value || "Аноним";
+      const text = document.getElementById("msg").value;
+
+      if (!text) return;
+
+      chat.set({
+        name,
+        text,
+        time: Date.now()
+      });
+
+      document.getElementById("msg").value = "";
+    }
+
+    chat.map().on((data) => {
+      if (!data || !data.text) return;
+
+      const li = document.createElement("li");
+      li.textContent = data.name + ": " + data.text;
+
+      document.getElementById("chat").appendChild(li);
+    });
+  </script>
+</body>
+</html>
