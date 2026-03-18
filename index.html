@@ -43,23 +43,22 @@
 
     const messages = {};
 
-chat.map().on((data, id) => {
-  if (!data || !data.text) return;
+	chat.map().on((data, id) => {
+	  if (!data || !data.text) return;
 
-  messages[id] = data;
+	  messages[id] = data;
 
-  const chatEl = document.getElementById("chat");
-  chatEl.innerHTML = "";
+	  const chatEl = document.getElementById("chat");
+	  chatEl.innerHTML = "";
 
-  Object.values(messages)
-    .sort((a, b) => a.time - b.time)
-    .forEach(msg => {
-      const li = document.createElement("li");
-      li.textContent = msg.name + ": " + msg.text;
-      chatEl.appendChild(li);
-    });
-});
-    });
+	  Object.values(messages)
+		.sort((a, b) => a.time - b.time)
+		.forEach(msg => {
+		  const li = document.createElement("li");
+		  li.textContent = msg.name + ": " + msg.text;
+		  chatEl.appendChild(li);
+		});
+	});
   </script>
 </body>
 </html>
